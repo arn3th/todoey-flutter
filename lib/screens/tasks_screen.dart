@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
 import 'package:todoey_flutter/models/task.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bananas'),
-  ];
-
+class TasksScreen extends StatelessWidget {
   Widget buildBottomSheet(BuildContext context) {
     return Container();
   }
@@ -33,10 +24,12 @@ class _TasksScreenState extends State<TasksScreen> {
             context: context,
             builder: (context) => AddTaskScreen(
               addTaskCallback: (newTaskTitle) {
-                setState(() {
-                  this.tasks.add(Task(name: newTaskTitle));
-                  Navigator.pop(context);
-                });
+                // setState(() {
+                //   Provider.of<TaskData>(context)
+                //       .tasks
+                //       .add(Task(name: newTaskTitle));
+                // });
+                Navigator.pop(context);
               },
             ),
           );
@@ -72,7 +65,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  '12 Tasks',
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,
@@ -91,14 +84,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: TasksList(
-                tasks: this.tasks,
-                toggleCheckboxCallback: (index) {
-                  setState(() {
-                    this.tasks[index].toggleDone();
-                  });
-                },
-              ),
+              child: TasksList(),
             ),
           )
         ],
