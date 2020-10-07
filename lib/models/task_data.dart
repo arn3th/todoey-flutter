@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:todoey_flutter/models/task.dart';
 
 class TaskData extends ChangeNotifier {
-  List<Task> _tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bananas'),
-  ];
+  final _tasks = Hive.box('tasks');
 
   int get taskCount {
     return _tasks.length;
@@ -18,20 +15,20 @@ class TaskData extends ChangeNotifier {
   }
 
   void updateTask(int index) {
-    _tasks[index].toggleDone();
+    _tasks.get(index).toggleDone();
     notifyListeners();
   }
 
   void deleteTask(int index) {
-    _tasks.removeAt(index);
+    _tasks.get(index)(index);
     notifyListeners();
   }
 
   String getTaskName(int index) {
-    return _tasks[index].name;
+    return _tasks.get(index).name;
   }
 
   bool isTaskDone(int index) {
-    return _tasks[index].isDone;
+    return _tasks.get(index).isDone;
   }
 }
